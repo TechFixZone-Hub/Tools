@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Converter — TechFixZone Tools</title>
+  <meta name="description" content="Free online color converter. Convert colors between HEX, RGB, HSL, and RGBA formats instantly."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://techfixzone-hub.github.io/Tools/color-converter.html"/>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#0a0a0f;--border:#1e1e2e;--accent:#00e5ff;--text:#e2e2f0;--muted:#6b6b8a;--card:#13131c;}
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+    header{position:relative;z-index:10;border-bottom:1px solid var(--border);background:rgba(10,10,15,0.9);backdrop-filter:blur(12px);padding:0 24px;}
+    .header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px;}
+    .logo{font-family:'Space Mono',monospace;font-size:16px;font-weight:700;color:var(--text);text-decoration:none;display:flex;align-items:center;gap:8px;}
+    .logo-badge{background:var(--accent);color:#000;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+    .back-link{font-size:13px;color:var(--muted);text-decoration:none;font-family:'Space Mono',monospace;}
+    .back-link:hover{color:var(--accent);}
+    .page{position:relative;z-index:1;max-width:700px;margin:0 auto;padding:40px 24px 80px;}
+    .page-title{font-family:'Space Mono',monospace;font-size:clamp(22px,4vw,36px);font-weight:700;color:#fff;margin-bottom:8px;}
+    .page-title span{color:var(--accent);}
+    .page-desc{font-size:15px;color:var(--muted);margin-bottom:36px;}
+    .color-pick-row{display:flex;align-items:center;gap:16px;margin-bottom:28px;}
+    input[type=color]{width:80px;height:80px;border:2px solid var(--border);border-radius:14px;background:none;cursor:pointer;padding:4px;}
+    .pick-label{font-size:14px;color:var(--muted);}
+    .pick-hex{font-family:'Space Mono',monospace;font-size:22px;color:var(--accent);}
+    .formats-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+    .format-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+    .format-info{display:flex;flex-direction:column;gap:4px;}
+    .format-name{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
+    .format-value{font-family:'Space Mono',monospace;font-size:15px;color:var(--text);}
+    .copy-small{background:none;border:1px solid var(--border);color:var(--muted);font-family:'Space Mono',monospace;font-size:11px;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+    .copy-small:hover{border-color:var(--accent);color:var(--accent);}
+    .copy-small.copied{border-color:#00ff88;color:#00ff88;}
+    .color-preview{width:100%;height:140px;border-radius:14px;border:1px solid var(--border);margin-bottom:28px;transition:background 0.2s;}
+    footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:24px;text-align:center;font-size:13px;color:var(--muted);}
+    footer a{color:var(--accent);text-decoration:none;}
+  </style>
+</head>
+<body>
+<header><div class="header-inner">
+  <a href="index.html" class="logo">TechFixZone <span class="logo-badge">TOOLS</span></a>
+  <a href="index.html" class="back-link">← All Tools</a>
+</div></header>
+<div class="page">
+  <h1 class="page-title">Color <span>Converter</span></h1>
+  <p class="page-desc">Convert colors between HEX, RGB, HSL, and RGBA formats instantly.</p>
+  <div class="color-pick-row">
+    <input type="color" id="colorPicker" value="#00e5ff" oninput="update(this.value)"/>
+    <div><div class="pick-label">Selected Color</div><div class="pick-hex" id="hexDisplay">#00e5ff</div></div>
+  </div>
+  <div class="color-preview" id="colorPreview"></div>
+  <div class="formats-grid">
+    <div class="format-card"><div class="format-info"><span class="format-name">HEX</span><span class="format-value" id="hexVal">#00e5ff</span></div><button class="copy-small" onclick="cp('hexVal',this)">Copy</button></div>
+    <div class="format-card"><div class="format-info"><span class="format-name">RGB</span><span class="format-value" id="rgbVal">rgb(0, 229, 255)</span></div><button class="copy-small" onclick="cp('rgbVal',this)">Copy</button></div>
+    <div class="format-card"><div class="format-info"><span class="format-name">RGBA</span><span class="format-value" id="rgbaVal">rgba(0, 229, 255, 1)</span></div><button class="copy-small" onclick="cp('rgbaVal',this)">Copy</button></div>
+    <div class="format-card"><div class="format-info"><span class="format-name">HSL</span><span class="format-value" id="hslVal">hsl(187, 100%, 50%)</span></div><button class="copy-small" onclick="cp('hslVal',this)">Copy</button></div>
+    <div class="format-card"><div class="format-info"><span class="format-name">HSLA</span><span class="format-value" id="hslaVal">hsla(187, 100%, 50%, 1)</span></div><button class="copy-small" onclick="cp('hslaVal',this)">Copy</button></div>
+    <div class="format-card"><div class="format-info"><span class="format-name">CSS Variable</span><span class="format-value" id="cssVar">--color: #00e5ff;</span></div><button class="copy-small" onclick="cp('cssVar',this)">Copy</button></div>
+  </div>
+</div>
+<footer><a href="index.html">← Back to All Tools</a> &nbsp;|&nbsp; Free tools by <a href="https://www.techfixzone.com" target="_blank">TechFixZone.com</a></footer>
+<script>
+function hexToRgb(hex){return{r:parseInt(hex.slice(1,3),16),g:parseInt(hex.slice(3,5),16),b:parseInt(hex.slice(5,7),16)};}
+function rgbToHsl(r,g,b){r/=255;g/=255;b/=255;const max=Math.max(r,g,b),min=Math.min(r,g,b);let h,s,l=(max+min)/2;if(max===min){h=s=0;}else{const d=max-min;s=l>0.5?d/(2-max-min):d/(max+min);switch(max){case r:h=(g-b)/d+(g<b?6:0);break;case g:h=(b-r)/d+2;break;case b:h=(r-g)/d+4;break;}h/=6;}return{h:Math.round(h*360),s:Math.round(s*100),l:Math.round(l*100)};}
+function update(hex){
+  document.getElementById('hexDisplay').textContent=hex;
+  document.getElementById('colorPreview').style.background=hex;
+  const{r,g,b}=hexToRgb(hex);
+  const{h,s,l}=rgbToHsl(r,g,b);
+  document.getElementById('hexVal').textContent=hex;
+  document.getElementById('rgbVal').textContent=`rgb(${r}, ${g}, ${b})`;
+  document.getElementById('rgbaVal').textContent=`rgba(${r}, ${g}, ${b}, 1)`;
+  document.getElementById('hslVal').textContent=`hsl(${h}, ${s}%, ${l}%)`;
+  document.getElementById('hslaVal').textContent=`hsla(${h}, ${s}%, ${l}%, 1)`;
+  document.getElementById('cssVar').textContent=`--color: ${hex};`;
+}
+function cp(id,btn){
+  navigator.clipboard.writeText(document.getElementById(id).textContent).then(()=>{
+    btn.textContent='Copied!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  });
+}
+update('#00e5ff');
+</script>
+</body></html>
