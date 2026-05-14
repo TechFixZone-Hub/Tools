@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://techfixzone-hub.github.io/Tools/sitemap.xml
